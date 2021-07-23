@@ -14,15 +14,15 @@ bot = telebot.TeleBot(API_KEY)
 # Controllers
 
 # Start
-@bot.message_handler(func=lambda msg: msg.text == 'start', commands=['start'])
+@bot.message_handler(commands=['start'])
 def start(message):
-	bot.send_message(message.chat.id,data_source['welcome'] , reply_markup=ui.create_keyboard_menu(['Show me the menu', 'Recommend me an option', 'Show me my order']))
+	bot.send_message(message.chat.id,data_source.text_messages['welcome'] , reply_markup=ui.create_keyboard_menu(['Show me the menu', 'Recommend me an option', 'Show me my order']))
 
 
 # Info
 @bot.message_handler(commands=['info', 'help'])
 def on_info(message):
-    bot.reply_to(message, data_source['info'] + "\n" + "https://i1.sndcdn.com/artworks-000501693894-wnq8jo-t500x500.jpg" )
+    bot.reply_to(message, data_source.text_messages['info'] + "\n" + "https://i1.sndcdn.com/artworks-000501693894-wnq8jo-t500x500.jpg" )
 
 
 # Menu
@@ -42,6 +42,19 @@ def on_menu(res):
 				ui.create_card(item, pizza_list[item]) ,
 				reply_markup=ui.create_keyboard_menu(['S', 'M', 'L'])
 			)
+@bot.callback_query_handler(func=lambda query: query.data == "Recommend me an option")
+def on_recommendation(res):
+	bot.send_message(res.message.chat.id,"I cant do that right now please, wait til my upgrade...", reply_markup=ui.create_keyboard_menu(['Ok']))
+
+@bot.callback_query_handler(func=lambda query: query.data == "Show me my order")
+def on_order(res):
+	bot.send_message(res.message.chat.id, "I cant do that right now please, wait til my upgrade...",reply_markup=ui.create_keyboard_menu(['Ok']))
+
+@bot.callback_query_handler(func=lambda query: query.data == "Ok")
+def start_again(res):
+	bot.send_message(res.message.chat.id, data_source.text_messages['welcome'], reply_markup=ui.create_keyboard_menu(
+		['Show me the menu', 'Recommend me an option', 'Show me my order']))
+
 
 # Confirm
 @bot.callback_query_handler(func= lambda  query: query.data in data_source.size_list)
