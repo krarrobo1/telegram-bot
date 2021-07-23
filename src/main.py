@@ -44,11 +44,11 @@ def on_menu(res):
 			)
 @bot.callback_query_handler(func=lambda query: query.data == "Recommend me an option")
 def on_recommendation(res):
-	bot.send_message(res.message.chat.id,"I cant do that right now please, wait til my upgrade...", reply_markup=ui.create_keyboard_menu(['Ok']))
+	bot.send_message(res.message.chat.id, "Choose an option...",reply_markup=ui.create_keyboard_menu(['Vegetarian', 'Carnivore']))
 
 @bot.callback_query_handler(func=lambda query: query.data == "Show me my order")
 def on_order(res):
-	bot.send_message(res.message.chat.id, "I cant do that right now please, wait til my upgrade...",reply_markup=ui.create_keyboard_menu(['Ok']))
+	bot.send_message(res.message.chat.id,"I cant do that right now please, wait til my upgrade...", reply_markup=ui.create_keyboard_menu(['Ok']))
 
 @bot.callback_query_handler(func=lambda query: query.data == "Ok")
 def start_again(res):
